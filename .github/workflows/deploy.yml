@@ -28,7 +28,7 @@ jobs:
             # Clone the repo if it doesn't exist
             if [ ! -d "cicd/.git" ]; then
               echo "⚡ Cloning repository..."
-              git clone git@github.com:your-username/your-repo.git cicd
+              git clone https://github.com/SoftwareDeveloperYadavJi/100xdevs-cicd-class.git
             fi
 
             # Move into the repo
