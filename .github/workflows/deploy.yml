@@ -21,9 +21,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             echo "🚀 Connecting to EC2 instance..."
-
-            # Navigate to deployment directory
-            cd /home/ubuntu || exit
+            
 
             # Clone the repo if it doesn't exist
             if [ ! -d "cicd/.git" ]; then
