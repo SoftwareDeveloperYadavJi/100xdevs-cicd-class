@@ -1,10 +1,29 @@
 import React from 'react';
 import Image from "next/image";
 import { Github, Linkedin, Mail, Code2, BookOpen, Award, Terminal } from 'lucide-react';
+import { LucideIcon } from 'lucide-react';
 
+interface ExperienceCardProps {
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+}
 
-// @ts-expect-error
-const ExperienceCard = ({ title, company, period, description }) => (
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  tech: string[];
+  link: string;
+}
+
+interface StatsProps {
+  icon: LucideIcon;
+  title: string;
+  value: string;
+}
+
+const ExperienceCard: React.FC<ExperienceCardProps> = ({ title, company, period, description }) => (
   <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all">
     <h3 className="text-xl font-semibold text-white">{title}</h3>
     <p className="text-blue-400 mt-1">{company}</p>
@@ -13,19 +32,16 @@ const ExperienceCard = ({ title, company, period, description }) => (
   </div>
 );
 
-// @ts-expect-error
-const ProjectCard = ({ title, description, tech, link }) => (
+const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, tech, link }) => (
   <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all">
     <div className="flex justify-between items-start">
       <h3 className="text-xl font-semibold text-white">{title}</h3>
-      <a href={link} target="_blank" className="text-blue-400 hover:text-blue-300">
+      <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">
         <Github className="w-5 h-5" />
       </a>
     </div>
     <p className="text-gray-300 mt-3">{description}</p>
     <div className="mt-4 flex flex-wrap gap-2">
-      
-      {/* @ts-expect-error */}
       {tech.map((t, i) => (
         <span key={i} className="px-3 py-1 bg-gray-700 rounded-full text-sm text-gray-300">
           {t}
@@ -35,9 +51,7 @@ const ProjectCard = ({ title, description, tech, link }) => (
   </div>
 );
 
-
-// @ts-expect-error
-const Stats = ({ icon: Icon, title, value }) => (
+const Stats: React.FC<StatsProps> = ({ icon: Icon, title, value }) => (
   <div className="flex flex-col items-center p-4 bg-gray-800 rounded-lg">
     <Icon className="w-6 h-6 text-blue-400 mb-2" />
     <h4 className="text-gray-300 text-sm">{title}</h4>
@@ -45,7 +59,13 @@ const Stats = ({ icon: Icon, title, value }) => (
   </div>
 );
 
-export default function Home() {
+const Home: React.FC = () => {
+  const skills: string[] = [
+    "Node.js", "Python", "AWS", "Docker",
+    "Kubernetes", "MongoDB", "PostgreSQL", "Redis",
+    "CI/CD", "Security", "System Design", "API Design"
+  ];
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Hero Section */}
@@ -65,11 +85,11 @@ export default function Home() {
             </h1>
             <p className="mt-4 text-xl text-gray-300">Backend Engineer | DevOps | Cybersecurity Specialist</p>
             <div className="mt-6 flex space-x-4">
-              <a href="https://github.com/SoftwareDeveloperYadavJi" target="_blank"
+              <a href="https://github.com/SoftwareDeveloperYadavJi" target="_blank" rel="noopener noreferrer"
                 className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
                 <Github className="w-6 h-6" />
               </a>
-              <a href="https://linkedin.com/in/devnitin" target="_blank"
+              <a href="https://linkedin.com/in/devnitin" target="_blank" rel="noopener noreferrer"
                 className="p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition-colors">
                 <Linkedin className="w-6 h-6" />
               </a>
@@ -146,11 +166,7 @@ export default function Home() {
       <section className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold mb-8">Technical Skills</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {[
-            "Node.js", "Python", "AWS", "Docker",
-            "Kubernetes", "MongoDB", "PostgreSQL", "Redis",
-            "CI/CD", "Security", "System Design", "API Design"
-          ].map((skill, i) => (
+          {skills.map((skill, i) => (
             <div key={i} className="bg-gray-800 p-4 rounded-lg text-center">
               <span className="text-gray-300">{skill}</span>
             </div>
@@ -159,4 +175,6 @@ export default function Home() {
       </section>
     </div>
   );
-}
+};
+
+export default Home;
