@@ -1,4 +1,4 @@
-name: Deploy to AWS EC2
+name: Deploy Next.js to AWS EC2
 
 on:
   push:
@@ -9,7 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Executing remote SSH commands using SSH key
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@v1.2.0
         with:
           key: ${{ secrets.SSH_KEY }}
@@ -17,28 +20,52 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           script: |
-            echo "Connecting to EC2..."
+            echo "🚀 Connecting to EC2 instance..."
 
+            # Navigate to deployment directory
+            cd /home/ubuntu || exit
 
-            # Clone repo if it doesn't exist
-            if [ ! -d "cicd" ]; then
-              echo "Repository not found. Cloning..."
-              git clone https://github.com/SoftwareDeveloperYadavJi/100xdevs-cicd-class.git
+            # Clone the repo if it doesn't exist
+            if [ ! -d "cicd/.git" ]; then
+              echo "⚡ Cloning repository..."
+              git clone git@github.com:your-username/your-repo.git cicd
             fi
-            
-            cd cicd
 
-            # Ensure correct branch is checked out
+            # Move into the repo
+            cd cicd || exit
+
+            # Ensure we are on the correct branch and pull latest changes
             git checkout main
-            
-            # Pull the latest changes
             git reset --hard
             git pull origin main
 
-            # Install dependencies and restart app
-            npm install
-            npm run build
-            sudo npm install -g pm2
-            pm2 restart "my-app" || pm2 start npm --name "my-app" -- start
+            echo "✅ Repository updated."
 
-            echo "Deployment successful!"
+            # Load Node.js environment (if using nvm)
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            # Install dependencies
+            echo "📦 Installing dependencies..."
+            npm install
+
+            # Build the Next.js app
+            echo "🔨 Building Next.js application..."
+            npm run build
+
+            # Check if PM2 is installed, otherwise install it
+            if ! command -v pm2 &> /dev/null; then
+              echo "⚡ Installing PM2..."
+              sudo npm install -g pm2
+            fi
+
+            # Stop any existing instance of the app
+            pm2 delete "my-next-app" || true
+
+            # Start the Next.js app with PM2
+            echo "🚀 Starting application..."
+            pm2 start npm --name "my-next-app" -- start
+
+            # Save PM2 process list and startup script
+            pm2 save
+            pm2 startup systemd
