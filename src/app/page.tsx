@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Github, Linkedin, Mail, Code2, BookOpen, Award, Terminal } from 'lucide-react';
 
 
-// @ts-ignore
+// @ts-expect-error
 const ExperienceCard = ({ title, company, period, description }) => (
   <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all">
     <h3 className="text-xl font-semibold text-white">{title}</h3>
@@ -13,7 +13,7 @@ const ExperienceCard = ({ title, company, period, description }) => (
   </div>
 );
 
-// @ts-ignore
+// @ts-expect-error
 const ProjectCard = ({ title, description, tech, link }) => (
   <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all">
     <div className="flex justify-between items-start">
@@ -25,7 +25,7 @@ const ProjectCard = ({ title, description, tech, link }) => (
     <p className="text-gray-300 mt-3">{description}</p>
     <div className="mt-4 flex flex-wrap gap-2">
       
-      {/* @ts-ignore */}
+      {/* @ts-expect-error */}
       {tech.map((t, i) => (
         <span key={i} className="px-3 py-1 bg-gray-700 rounded-full text-sm text-gray-300">
           {t}
@@ -36,7 +36,7 @@ const ProjectCard = ({ title, description, tech, link }) => (
 );
 
 
-// @ts-ignore
+// @ts-expect-error
 const Stats = ({ icon: Icon, title, value }) => (
   <div className="flex flex-col items-center p-4 bg-gray-800 rounded-lg">
     <Icon className="w-6 h-6 text-blue-400 mb-2" />
