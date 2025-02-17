@@ -23,18 +23,13 @@ jobs:
             echo "🚀 Connecting to EC2 instance..."
             
 
-            # Clone the repo if it doesn't exist
-            if [ ! -d "cicd/.git" ]; then
-              echo "⚡ Cloning repository..."
-              git clone https://github.com/SoftwareDeveloperYadavJi/100xdevs-cicd-class.git
-            fi
+            
 
             # Move into the repo
-            cd cicd || exit
+            cd 100xdevs-cicd-class || exit
 
             # Ensure we are on the correct branch and pull latest changes
             git checkout main
-            git reset --hard
             git pull origin main
 
             echo "✅ Repository updated."
