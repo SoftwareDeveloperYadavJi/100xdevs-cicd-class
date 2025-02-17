@@ -81,7 +81,7 @@ const Home: React.FC = () => {
               priority
             />
             <h1 className="mt-6 text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-              Nitin Yadav
+              Nitin Yadav Ji
             </h1>
             <p className="mt-4 text-xl text-gray-300">Backend Engineer | DevOps | Cybersecurity Specialist</p>
             <div className="mt-6 flex space-x-4">
