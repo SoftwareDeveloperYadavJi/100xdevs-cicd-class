@@ -59,6 +59,4 @@ jobs:
             echo "🚀 Starting application..."
             pm2 start npm --name "my-next-app" -- start
 
-            # Save PM2 process list and startup script
-            pm2 save
-            pm2 startup systemd
+            echo "🎉 Deployment complete!"
