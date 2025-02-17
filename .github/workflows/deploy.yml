@@ -5,28 +5,40 @@ on:
     branches:
       - main
 
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-        - name: checkout repository
-          uses: actions/checkout@v2
-        - name: executing remote ssh commands using ssh key
-          uses: appleboy/ssh-action@v1.2.0
-          with:
-            key: ${{ secrets.SSH_KEY }}
-            host: ${{ secrets.HOST }}
-            username: ${{ secrets.USERNAME }}
-            port: ${{ secrets.PORT }}
-            script: |
-              cd /home/ubuntu/cicd
-              git pull
-              npm install
-              npm run build
-              sudo npm install -g pm2
-              pm2 start npm --name "my-app" -- start
+      - name: Executing remote SSH commands using SSH key
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          script: |
+            echo "Connecting to EC2..."
 
-              
 
-              
+            # Clone repo if it doesn't exist
+            if [ ! -d "cicd" ]; then
+              echo "Repository not found. Cloning..."
+              git clone https://github.com/SoftwareDeveloperYadavJi/100xdevs-cicd-class.git
+            fi
+            
+            cd cicd
+
+            # Ensure correct branch is checked out
+            git checkout main
+            
+            # Pull the latest changes
+            git reset --hard
+            git pull origin main
+
+            # Install dependencies and restart app
+            npm install
+            npm run build
+            sudo npm install -g pm2
+            pm2 restart "my-app" || pm2 start npm --name "my-app" -- start
+
+            echo "Deployment successful!"
