@@ -19,6 +19,14 @@ jobs:
             host: ${{ secrets.HOST }}
             username: ${{ secrets.USERNAME }}
             port: ${{ secrets.PORT }}
-            script: whoami
+            script: |
+              cd /home/ubuntu/cicd
+              git pull
+              npm install
+              npm run build
+              sudo npm install -g pm2
+              pm2 start npm --name "my-app" -- start
+
+              
 
               
